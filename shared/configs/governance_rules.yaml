@@ -1,0 +1,27 @@
+rules:
+  - id: incident_rca_required
+    type: rca_completeness
+    condition:
+      event_type: incident_updated
+      severity: high
+    requires:
+      - root_cause
+      - remediation
+      - owner
+    soc2_mapping: CC7.1
+
+  - id: change_management_approval
+    type: change_management
+    condition:
+      event_type: pr_merged
+    requires:
+      - approvals
+      - pr_reference
+    soc2_mapping: CC8.1
+
+  - id: sla_acknowledgment
+    type: sla_validation
+    condition:
+      event_type: ticket_escalated
+    max_ack_time_minutes: 15
+    soc2_mapping: CC7.3
