@@ -1,0 +1,20 @@
+[project]
+name = "mock-simulation"
+version = "0.1.0"
+description = "Synthetic Incident & Operational Workflow Testing Platform"
+authors = [
+    {name = "Jules",email = "jules@example.com"}
+]
+requires-python = "^3.10"
+dependencies = [
+    "fastapi (>=0.136.1,<0.137.0)",
+    "uvicorn (>=0.47.0,<0.48.0)",
+    "pydantic (>=2.13.4,<3.0.0)",
+    "faker (>=40.18.0,<41.0.0)",
+    "typer (>=0.25.1,<0.26.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
