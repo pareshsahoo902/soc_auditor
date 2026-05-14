@@ -2,7 +2,7 @@ import time
 from typing import List, Callable, Dict, Any
 from datetime import datetime, timedelta
 
-from mock_simulation.scenarios.schema import UnifiedEvent
+from mock_simulation.core.models.events import UnifiedEvent
 
 class TimelineEngine:
     def __init__(self, start_time_iso: str):

@@ -1,15 +1,22 @@
 from typing import List, Dict, Any
 from mock_simulation.scenarios.base import BaseScenario
-from mock_simulation.scenarios.schema import UnifiedEvent
+from mock_simulation.core.models.events import UnifiedEvent
 from mock_simulation.scenarios.registry import ScenarioRegistry
 from mock_simulation.timelines.engine import TimelineEngine
 from mock_simulation.generators.jira import JiraGenerator
 from mock_simulation.generators.github import GitHubGenerator
 from mock_simulation.generators.confluence import ConfluenceGenerator
 from mock_simulation.generators.relationship import RelationshipGenerator
+from mock_simulation.core.models.governance import BenchmarkType
 
 @ScenarioRegistry.register("sev1_outage")
 class Sev1Scenario(BaseScenario):
+    name = "SEV-1 Outage Happy Path"
+    description = "A standard SEV-1 incident handled perfectly within SLAs."
+    scenario_version = "1.0.0"
+    benchmark_type = BenchmarkType.HAPPY_PATH
+    tags = ["sev1", "incident", "happy_path"]
+
     def generate_events(self, timeline: TimelineEngine, org_id: str) -> List[UnifiedEvent]:
         jira = JiraGenerator(self.faker)
         github = GitHubGenerator(self.faker)
@@ -57,7 +64,7 @@ class Sev1Scenario(BaseScenario):
         return timeline.get_events()
 
     def expected_findings(self) -> List[Dict[str, Any]]:
-        return [] # Healthy flow, no governance violations expected
+        return []
 
     def expected_graph(self) -> List[Dict[str, Any]]:
         return [

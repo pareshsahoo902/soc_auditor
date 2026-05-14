@@ -6,25 +6,30 @@ from mock_simulation.timelines.engine import TimelineEngine
 from mock_simulation.generators.github import GitHubGenerator
 from mock_simulation.core.models.governance import BenchmarkType, FindingCategory, GovernanceSeverity
 
-@ScenarioRegistry.register("missing_approval")
-class MissingApprovalScenario(BaseScenario):
-    name = "Missing PR Approval"
-    description = "PR merged without mandatory SOC2 review."
+@ScenarioRegistry.register("missing_rollback")
+class MissingRollbackScenario(BaseScenario):
+    name = "Missing Rollback Plan"
+    description = "PR merged without a rollback plan in its description."
     scenario_version = "1.0.0"
     benchmark_type = BenchmarkType.GOVERNANCE_FAILURE
-    tags = ["github", "pr", "cc8"]
+    tags = ["github", "pr", "change_management"]
 
     def generate_events(self, timeline: TimelineEngine, org_id: str) -> List[UnifiedEvent]:
         github = GitHubGenerator(self.faker)
 
-        # 00:00 PR Created
+        # 00:00 PR Created without rollback plan
         author = self.faker.email()
-        pr_event = github.generate_pr_created(timeline, org_id, "core-api", "Emergency fix without review", author)
+        desc = "Implemented new feature X. LGTM."
+        pr_event = github.generate_pr_created(timeline, org_id, "frontend-app", desc, author)
         pr_id = pr_event.metadata["pr_id"]
 
-        # 00:02 PR Merged without approval (Bypass)
-        timeline.advance_time(minutes=2)
-        github.generate_pr_merged(timeline, org_id, "core-api", pr_id, author)
+        # 00:05 PR Approved
+        timeline.advance_time(minutes=5)
+        github.generate_pr_approved(timeline, org_id, "frontend-app", pr_id, self.faker.email())
+
+        # 00:10 PR Merged
+        timeline.advance_time(minutes=5)
+        github.generate_pr_merged(timeline, org_id, "frontend-app", pr_id, author)
 
         return timeline.get_events()
 
@@ -32,7 +37,7 @@ class MissingApprovalScenario(BaseScenario):
         return [
             {
                 "category": FindingCategory.CHANGE_GOVERNANCE.value,
-                "severity": GovernanceSeverity.CRITICAL.value,
-                "description": "PR merged without required approvals"
+                "severity": GovernanceSeverity.MEDIUM.value,
+                "description": "PR merged without documented rollback plan."
             }
         ]

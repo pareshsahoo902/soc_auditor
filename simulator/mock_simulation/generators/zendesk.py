@@ -1,5 +1,5 @@
 from typing import Dict, Any, Optional
-from mock_simulation.scenarios.schema import UnifiedEvent
+from mock_simulation.core.models.events import UnifiedEvent
 from mock_simulation.generators.base import GeneratorBase
 from mock_simulation.timelines.engine import TimelineEngine
 
@@ -7,9 +7,10 @@ class ZendeskGenerator(GeneratorBase):
     def generate_customer_ticket(self, timeline: TimelineEngine, org_id: str, subject: str, description: str) -> UnifiedEvent:
         ticket_id = f"ZD-{self.faker.random_int(min=10000, max=99999)}"
         event = UnifiedEvent(
-            event_id=self.faker.uuid4(),
+            event_id=self.id_gen.generate_id(self.faker.seed, "event", self.faker.random_int(1, 1000000)),
             source="Zendesk",
             event_type="ticket_created",
+            entity_type="Ticket",
             timestamp=timeline.get_current_time_iso(),
             organization_id=org_id,
             metadata={
@@ -24,9 +25,10 @@ class ZendeskGenerator(GeneratorBase):
 
     def generate_sla_breach(self, timeline: TimelineEngine, org_id: str, ticket_id: str, breach_type: str) -> UnifiedEvent:
         event = UnifiedEvent(
-            event_id=self.faker.uuid4(),
+            event_id=self.id_gen.generate_id(self.faker.seed, "event", self.faker.random_int(1, 1000000)),
             source="Zendesk",
             event_type="sla_breach",
+            entity_type="SLAEvent",
             timestamp=timeline.get_current_time_iso(),
             organization_id=org_id,
             metadata={

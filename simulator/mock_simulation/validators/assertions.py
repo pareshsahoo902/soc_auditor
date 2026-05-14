@@ -1,4 +1,5 @@
 from typing import List, Dict, Any
+from mock_simulation.core.scoring import GovernanceScoringEngine
 
 class GovernanceAssertionEngine:
     @staticmethod
@@ -7,17 +8,16 @@ class GovernanceAssertionEngine:
         Validates that expected findings are present in the actual findings.
         """
         if not expected_findings:
-            return True # Nothing to assert
+            return True
 
-        # Simplistic check for MVP
         for expected in expected_findings:
             found = False
             for actual in actual_findings:
-                if expected["finding_type"] == actual.get("finding_type"):
+                if expected["category"] == actual.get("category"):
                     found = True
                     break
             if not found:
-                raise AssertionError(f"Expected finding '{expected['finding_type']}' not found in actual findings.")
+                raise AssertionError(f"Expected finding '{expected['category']}' not found in actual findings.")
         return True
 
     @staticmethod
@@ -28,7 +28,6 @@ class GovernanceAssertionEngine:
         if not expected_graph:
             return True
 
-        # Simplistic check for MVP
         for expected in expected_graph:
             found = False
             for actual in actual_graph:
@@ -57,4 +56,19 @@ class GovernanceAssertionEngine:
                     break
             if not found:
                 raise AssertionError(f"Expected SLA '{expected}' not found.")
+        return True
+
+    @staticmethod
+    def assert_governance_score(expected_scores: Dict[str, float], actual_scores: Dict[str, float]) -> bool:
+        """
+        Validates the expected scores match reality.
+        """
+        if not expected_scores:
+            return True
+
+        for score_name, expected_value in expected_scores.items():
+            if score_name not in actual_scores:
+                raise AssertionError(f"Expected score '{score_name}' not found in actual scores.")
+            if actual_scores[score_name] != expected_value:
+                raise AssertionError(f"Expected score '{score_name}' to be {expected_value}, got {actual_scores[score_name]}.")
         return True

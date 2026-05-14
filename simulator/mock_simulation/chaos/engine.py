@@ -1,5 +1,5 @@
 from typing import List
-from mock_simulation.scenarios.schema import UnifiedEvent
+from mock_simulation.core.models.events import UnifiedEvent
 import random
 
 class ChaosEngine:

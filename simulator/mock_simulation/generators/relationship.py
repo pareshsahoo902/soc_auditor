@@ -1,5 +1,5 @@
 from typing import Dict, Any, Optional, List
-from mock_simulation.scenarios.schema import UnifiedEvent
+from mock_simulation.core.models.events import UnifiedEvent
 from mock_simulation.generators.base import GeneratorBase
 from mock_simulation.timelines.engine import TimelineEngine
 
@@ -10,9 +10,10 @@ class RelationshipGenerator(GeneratorBase):
         (like a unified governance platform webhook).
         """
         event = UnifiedEvent(
-            event_id=self.faker.uuid4(),
+            event_id=self.id_gen.generate_id(self.faker.seed, "event", self.faker.random_int(1, 1000000)),
             source="System",
             event_type="relationship_created",
+            entity_type="GovernanceFinding",
             timestamp=timeline.get_current_time_iso(),
             organization_id=org_id,
             metadata={

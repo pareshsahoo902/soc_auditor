@@ -17,7 +17,7 @@ def list_scenarios():
         print(f"- {s}")
 
 @app.command()
-def run(scenario: str, org_id: str = "ORG-123", seed: int = 42, output_file: Optional[str] = None):
+def simulate(scenario: str, org_id: str = "ORG-123", seed: int = 42, output_file: Optional[str] = None):
     """Run a scenario and generate events deterministically."""
     if scenario not in ScenarioRegistry.list_scenarios():
         print(f"[bold red]Error:[/bold red] Scenario '{scenario}' not found.")
@@ -31,7 +31,11 @@ def run(scenario: str, org_id: str = "ORG-123", seed: int = 42, output_file: Opt
             json.dump(result, f, indent=2)
         print(f"[bold green]Success![/bold green] Results written to {output_file}")
     else:
-        print(json.dumps(result, indent=2))
+        # Avoid printing massive JSON outputs completely to terminal, just print summary
+        print(f"[bold green]Simulation Complete![/bold green]")
+        print(f"Events generated: {len(result['events'])}")
+        print(f"Scores: {result['scores']}")
+        print(f"Graph Valid: {result['graph_validation']['is_valid']}")
 
 if __name__ == "__main__":
     app()

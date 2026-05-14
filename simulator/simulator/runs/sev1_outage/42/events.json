@@ -1,0 +1,133 @@
+[
+  {
+    "event_id": "event_af4fd68c29ec",
+    "source": "Jira",
+    "event_type": "issue_created",
+    "entity_type": "Ticket",
+    "timestamp": "2026-05-15T10:00:00Z",
+    "organization_id": "ORG-123",
+    "metadata": {
+      "ticket_id": "ENG-2824",
+      "severity": "SEV-1",
+      "summary": "Database Outage in Production",
+      "status": "Open",
+      "reporter": "john21@example.net",
+      "assignee": null
+    }
+  },
+  {
+    "event_id": "event_4a74e9ef6a99",
+    "source": "Jira",
+    "event_type": "issue_updated",
+    "entity_type": "Ticket",
+    "timestamp": "2026-05-15T10:05:00Z",
+    "organization_id": "ORG-123",
+    "metadata": {
+      "ticket_id": "ENG-2824",
+      "status": "In Progress",
+      "update_type": "status_change"
+    }
+  },
+  {
+    "event_id": "event_b196a9edb868",
+    "source": "GitHub",
+    "event_type": "pull_request_created",
+    "entity_type": "PullRequest",
+    "timestamp": "2026-05-15T10:30:00Z",
+    "organization_id": "ORG-123",
+    "metadata": {
+      "pr_id": 224,
+      "repo": "backend-service",
+      "title": "Fix DB connection pool",
+      "author": "garzaanthony@example.org",
+      "state": "open"
+    }
+  },
+  {
+    "event_id": "event_eaf863d3a033",
+    "source": "GitHub",
+    "event_type": "pull_request_approved",
+    "entity_type": "PullRequest",
+    "timestamp": "2026-05-15T10:35:00Z",
+    "organization_id": "ORG-123",
+    "metadata": {
+      "pr_id": 224,
+      "repo": "backend-service",
+      "reviewer": "hoffmanjennifer@example.net",
+      "state": "approved"
+    }
+  },
+  {
+    "event_id": "event_5f682dc3d488",
+    "source": "GitHub",
+    "event_type": "pull_request_merged",
+    "entity_type": "PullRequest",
+    "timestamp": "2026-05-15T10:40:00Z",
+    "organization_id": "ORG-123",
+    "metadata": {
+      "pr_id": 224,
+      "repo": "backend-service",
+      "merged_by": "lrobinson@example.com",
+      "commit_sha": "a309cfc06804e5af9432ee6c6703ca1bf6afe849",
+      "state": "merged"
+    }
+  },
+  {
+    "event_id": "event_eefada07af79",
+    "source": "System",
+    "event_type": "relationship_created",
+    "entity_type": "GovernanceFinding",
+    "timestamp": "2026-05-15T10:45:00Z",
+    "organization_id": "ORG-123",
+    "metadata": {
+      "source_entity_id": "ENG-2824",
+      "target_entity_id": "224",
+      "relationship_type": "incident_to_pr"
+    }
+  },
+  {
+    "event_id": "event_3737235ecb68",
+    "source": "Jira",
+    "event_type": "issue_updated",
+    "entity_type": "Ticket",
+    "timestamp": "2026-05-15T11:00:00Z",
+    "organization_id": "ORG-123",
+    "metadata": {
+      "ticket_id": "ENG-2824",
+      "status": "Resolved",
+      "update_type": "status_change"
+    }
+  },
+  {
+    "event_id": "event_b4bff9ada9a0",
+    "source": "Confluence",
+    "event_type": "page_created",
+    "entity_type": "RCA",
+    "timestamp": "2026-05-15T12:00:00Z",
+    "organization_id": "ORG-123",
+    "metadata": {
+      "page_id": "CONF-267414",
+      "title": "RCA: ENG-2824 Database Outage",
+      "content": "We ran out of connections. Increased pool size.",
+      "author": "jpeterson@example.org",
+      "labels": [
+        "rca",
+        "postmortem"
+      ],
+      "related_incident": "ENG-2824"
+    }
+  },
+  {
+    "event_id": "event_3c4508c2ccf4",
+    "source": "System",
+    "event_type": "relationship_created",
+    "entity_type": "GovernanceFinding",
+    "timestamp": "2026-05-15T12:05:00Z",
+    "organization_id": "ORG-123",
+    "metadata": {
+      "source_entity_id": "ENG-2824",
+      "target_entity_id": "CONF-267414",
+      "relationship_type": "incident_to_rca"
+    }
+  }
+]
