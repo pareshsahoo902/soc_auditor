@@ -1,12 +1,19 @@
 from typing import List, Dict, Any
 from mock_simulation.scenarios.base import BaseScenario
-from mock_simulation.scenarios.schema import UnifiedEvent
+from mock_simulation.core.models.events import UnifiedEvent
 from mock_simulation.scenarios.registry import ScenarioRegistry
 from mock_simulation.timelines.engine import TimelineEngine
 from mock_simulation.generators.jira import JiraGenerator
+from mock_simulation.core.models.governance import BenchmarkType, FindingCategory, GovernanceSeverity
 
 @ScenarioRegistry.register("escalation_failure")
 class EscalationFailureScenario(BaseScenario):
+    name = "Escalation Missed on SEV-1"
+    description = "SEV-1 Incident unacknowledged without escalation."
+    scenario_version = "1.0.0"
+    benchmark_type = BenchmarkType.GOVERNANCE_FAILURE
+    tags = ["jira", "incident", "escalation"]
+
     def generate_events(self, timeline: TimelineEngine, org_id: str) -> List[UnifiedEvent]:
         jira = JiraGenerator(self.faker)
 
@@ -24,11 +31,12 @@ class EscalationFailureScenario(BaseScenario):
 
     def expected_findings(self) -> List[Dict[str, Any]]:
         return [
-            {"finding_type": "escalation_missed", "severity": "high", "description": "SEV-1 incident unacknowledged without escalation."}
+            {
+                "category": FindingCategory.ESCALATION_FAILURE.value,
+                "severity": GovernanceSeverity.HIGH.value,
+                "description": "SEV-1 incident unacknowledged without escalation."
+            }
         ]
-
-    def expected_graph(self) -> List[Dict[str, Any]]:
-        return []
 
     def expected_slas(self) -> List[Dict[str, Any]]:
         return [{"metric": "time_to_acknowledge", "status": "breached"}]

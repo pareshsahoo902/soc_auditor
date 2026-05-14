@@ -1,0 +1,12 @@
+[
+  {
+    "source_type": "jira_issue",
+    "target_type": "github_pr",
+    "relationship": "incident_to_pr"
+  },
+  {
+    "source_type": "jira_issue",
+    "target_type": "confluence_page",
+    "relationship": "incident_to_rca"
+  }
+]

@@ -1,12 +1,19 @@
 from typing import List, Dict, Any
 from mock_simulation.scenarios.base import BaseScenario
-from mock_simulation.scenarios.schema import UnifiedEvent
+from mock_simulation.core.models.events import UnifiedEvent
 from mock_simulation.scenarios.registry import ScenarioRegistry
 from mock_simulation.timelines.engine import TimelineEngine
 from mock_simulation.generators.zendesk import ZendeskGenerator
+from mock_simulation.core.models.governance import BenchmarkType, FindingCategory, GovernanceSeverity
 
 @ScenarioRegistry.register("sla_breach")
 class SLABreachScenario(BaseScenario):
+    name = "SLA Breach on First Reply"
+    description = "Zendesk ticket SLA exceeded."
+    scenario_version = "1.0.0"
+    benchmark_type = BenchmarkType.GOVERNANCE_FAILURE
+    tags = ["zendesk", "sla"]
+
     def generate_events(self, timeline: TimelineEngine, org_id: str) -> List[UnifiedEvent]:
         zendesk = ZendeskGenerator(self.faker)
 
@@ -24,11 +31,12 @@ class SLABreachScenario(BaseScenario):
 
     def expected_findings(self) -> List[Dict[str, Any]]:
         return [
-            {"finding_type": "sla_violation", "severity": "high", "description": "First reply time SLA breached"}
+            {
+                "category": FindingCategory.SLA_VIOLATION.value,
+                "severity": GovernanceSeverity.HIGH.value,
+                "description": "First reply time SLA breached"
+            }
         ]
-
-    def expected_graph(self) -> List[Dict[str, Any]]:
-        return []
 
     def expected_slas(self) -> List[Dict[str, Any]]:
         return [{"metric": "first_reply_time", "status": "breached"}]
