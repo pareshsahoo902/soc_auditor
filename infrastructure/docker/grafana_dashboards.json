@@ -1,0 +1,14 @@
+{
+  "dashboards": [
+    {
+      "title": "Governance Metrics",
+      "panels": [
+        {
+          "title": "Celery Queue Latency",
+          "type": "graph",
+          "targets": []
+        }
+      ]
+    }
+  ]
+}
